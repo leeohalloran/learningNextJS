@@ -1,11 +1,12 @@
 "use client"
 
-import { SyntheticEvent, useState } from 'react'
+import { SyntheticEvent, useState, startTransition } from 'react'
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import { Button } from "@/components/ui/button"
 import { createInvoice } from "@/app/actions"
+import SubmitButton from "@/components/SubmitButton"
+import Form from 'next/form'
 
 
 
@@ -13,12 +14,11 @@ export default function Home() {
     const [state, setState] = useState('ready');
 
     async function handleOnSubmit(event: SyntheticEvent) {
-        event.preventDefault();
-        if (state === 'pending') return;
+        if (state === 'pending') {
+            event.preventDefault();
+            return;
+        }
         setState('pending');
-        const target = event.target as HTMLFormElement;
-        const formData = new FormData(target);
-        await createInvoice(formData);
     }
 
     return (
@@ -28,7 +28,7 @@ export default function Home() {
                     Create Invoice
                 </h1>
             </div>
-            <form action={createInvoice} onSubmit={handleOnSubmit} className="grid gap-4  max-w-sm">
+            <Form action={createInvoice} onSubmit={handleOnSubmit} className="grid gap-4  max-w-sm">
                 <div>
                     <Label htmlFor="name">Billing Name</Label>
                     <Input name="name" id="name" className="block font-semibold text-sm mb-2" type="text" placeholder="Billing Name" />
@@ -46,9 +46,9 @@ export default function Home() {
                     <Textarea name="description" id="description" className="block font-semibold text-sm mb-2" />
                 </div>
                 <div>
-                    <Button className="w-full font-semibold">Submit</Button>
+                    <SubmitButton />
                 </div>
-            </form>
+            </Form>
         </main>
     );
 }
