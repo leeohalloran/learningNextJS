@@ -10,8 +10,6 @@ import { PaintBucket } from "lucide-react";
 export default async function InvoicePage({ params }: { params: { invoiceid: string } }) {
     const invId = parseInt(await params.invoiceid)
     const result = await db.select().from(Invoices).where(eq(Invoices.id, invId)).limit(1);
-
-    result[0].status = "uncollectable"
     return (
         <main className=" h-full max-w-5xl mx-auto my-12">
             <div className="justify-between mb-8">
