@@ -1,6 +1,14 @@
 import Image from "next/image";
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
+import {
+  ClerkProvider,
+  SignInButton,
+  SignUpButton,
+  SignedIn,
+  SignedOut,
+  UserButton,
+} from '@clerk/nextjs'
 
 
 export default function Home() {
@@ -9,8 +17,15 @@ export default function Home() {
       <h1 className="text-5xl font-bold">
         Invoicipedia
       </h1>
-      <p> 
-        <Button asChild> 
+      <p>
+        <SignedOut>
+          <SignInButton />
+          <SignUpButton />
+        </SignedOut>
+        <SignedIn>
+          <UserButton />
+        </SignedIn>
+        <Button asChild>
           <Link href="/dashboard">
             Sign In
           </Link>
