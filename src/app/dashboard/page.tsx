@@ -10,19 +10,20 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button";
 import { db } from "@/db"
 import { Invoices } from "@/db/schema"
 import { cn } from "@/lib/utils"
 import StatusBadge from "@/components/StatusBadge";
+import Container from '@/components/Container';
 
 
 export default async function Home() {
     const result = await db.select().from(Invoices);
     console.log(`Result`, result)
     return (
-        <main className="flex flex-col justify-center h-full text-center max-w-5xl mx-auto gap-6 my-12">
+        <main className=" h-full">
+            <Container>
             <div className="flex justify-between">
                 <h1 className="text-3xl font-semibold">
                     Invoices
@@ -109,6 +110,7 @@ export default async function Home() {
 
                 </TableBody>
             </Table>
+            </Container>
         </main>
     );
 }
