@@ -10,17 +10,20 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button";
 import { db } from "@/db"
 import { Invoices } from "@/db/schema"
+import { cn } from "@/lib/utils"
+import StatusBadge from "@/components/StatusBadge";
+import Container from '@/components/Container';
 
 
 export default async function Home() {
     const result = await db.select().from(Invoices);
     console.log(`Result`, result)
     return (
-        <main className="flex flex-col justify-center h-full text-center max-w-5xl mx-auto gap-6 my-12">
+        <main className=" h-full">
+            <Container>
             <div className="flex justify-between">
                 <h1 className="text-3xl font-semibold">
                     Invoices
@@ -68,8 +71,8 @@ export default async function Home() {
                                     </Link>
                                 </TableCell>
                                 <TableCell className="font-medium text-left p-0">
-                                    <Link href={`/invoices/${invoice.id}`}  className="block text-semibold p-4">
-                                       {new Date(invoice.createTs).toLocaleDateString()}
+                                    <Link href={`/invoices/${invoice.id}`} className="block text-semibold p-4">
+                                        {new Date(invoice.createTs).toLocaleDateString()}
                                     </Link>
                                 </TableCell>
                                 <TableCell className="text-left p-0">
@@ -84,9 +87,16 @@ export default async function Home() {
                                 </TableCell>
                                 <TableCell className="text-center p-0">
                                     <Link href={`/invoices/${invoice.id}`} className="block text-semibold p-4">
-                                        <Badge variant="destructive" className="rounded-full">
+                                        <StatusBadge status={result[0].status} />
+                                        {/* <Badge variant="destructive" className={cn(
+                                                            "rounded-full", "Capitalize",
+                                                            result[0].status === 'open' && 'bg-blue-500 text-white',
+                                                            result[0].status === 'paid' && 'bg-green-600 text-white',
+                                                            result[0].status === 'void' && 'bg-zinc-500 text-white',
+                                                            result[0].status === 'uncollectable' && 'bg-red-600 text-white'
+                                                        )}>
                                             {(invoice.status).toUpperCase()}
-                                        </Badge>
+                                        </Badge> */}
                                     </Link>
                                 </TableCell>
                                 <TableCell className="text-right p-0">
@@ -100,6 +110,7 @@ export default async function Home() {
 
                 </TableBody>
             </Table>
+            </Container>
         </main>
     );
 }
